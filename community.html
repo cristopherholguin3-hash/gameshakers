@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Community</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="game.html">Play Game</a>
+  <a href="community.html">Community</a>
+</nav>
+
+<div class="container">
+  <h2>💬 Community</h2>
+  <textarea id="comment" placeholder="Leave a comment..."></textarea><br>
+  <button onclick="postComment()">Post</button>
+
+  <ul id="comments"></ul>
+</div>
+
+<script>
+function postComment() {
+  const text = document.getElementById("comment").value;
+  const li = document.createElement("li");
+  li.innerText = text;
+  document.getElementById("comments").appendChild(li);
+}
+</script>
+
+</body>
+</html>
