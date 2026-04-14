@@ -1,12 +1,13 @@
 body {
+  margin: 0;
   font-family: Arial;
-  background: #0f172a;
+  background: radial-gradient(circle, #14532d, #022c22);
   color: white;
   text-align: center;
 }
 
 nav {
-  background: #1e293b;
+  background: #111;
   padding: 10px;
 }
 
@@ -14,23 +15,83 @@ nav a {
   color: white;
   margin: 0 15px;
   text-decoration: none;
-  font-weight: bold;
 }
 
-.container {
-  margin-top: 50px;
+.table {
+  margin-top: 30px;
 }
 
-button, .btn {
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px;
+}
+
+/* CARD CONTAINER */
+.card-container {
+  width: 80px;
+  height: 120px;
+  perspective: 1000px;
+}
+
+/* CARD */
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(180deg);
+  transition: transform 0.8s;
+}
+
+/* FLIP */
+.card.flip {
+  transform: rotateY(0deg);
+}
+
+/* FRONT/BACK */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  transform: rotateY(180deg);
+}
+
+.card-back {
+  background: url("assets/cards/back.png") no-repeat center/cover;
+}
+
+/* SLIDE IN */
+.slide-in {
+  animation: slide 0.5s ease forwards;
+}
+
+@keyframes slide {
+  from {
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+button {
   padding: 10px 20px;
   margin: 10px;
   background: #22c55e;
   border: none;
   color: white;
   cursor: pointer;
-  border-radius: 5px;
 }
 
-button:hover, .btn:hover {
-  background: #16a34a;
+.dealer {
+  width: 120px;
+  margin-bottom: 10px;
 }
