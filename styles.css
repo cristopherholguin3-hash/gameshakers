@@ -1,9 +1,12 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: radial-gradient(circle, #14532d, #022c22);
   color: white;
   text-align: center;
+
+  background: 
+    radial-gradient(circle at center, rgba(0,0,0,0.6), rgba(0,0,0,0.9)),
+    url("assets/table.jpg") no-repeat center center/cover;
 }
 
 nav {
