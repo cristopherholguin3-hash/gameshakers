@@ -1,4 +1,27 @@
-const suits = ["H", "S", "D", "C"];
+const suitsMap = {
+  H: "hearts",
+  S: "spades",
+  D: "diamonds",
+  C: "clubs"
+};
+
+const valuesMap = {
+  "A": "ace",
+  "K": "king",
+  "Q": "queen",
+  "J": "jack",
+  "10": "10",
+  "9": "9",
+  "8": "8",
+  "7": "7",
+  "6": "6",
+  "5": "5",
+  "4": "4",
+  "3": "3",
+  "2": "2"
+};
+
+const suits = ["H","S","D","C"];
 const values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
 
 let playerHand = [];
@@ -17,6 +40,14 @@ function getCardValue(card) {
   return parseInt(val);
 }
 
+/* 🔥 CONVERT TO SVG FILE NAME */
+function getCardFileName(card) {
+  let val = card.slice(0, -1);
+  let suit = card.slice(-1);
+
+  return `${valuesMap[val]}_of_${suitsMap[suit]}.svg`;
+}
+
 function calculateHand(hand) {
   let total = hand.reduce((sum, c) => sum + getCardValue(c), 0);
   let aces = hand.filter(c => c.startsWith("A")).length;
@@ -29,7 +60,7 @@ function calculateHand(hand) {
   return total;
 }
 
-/* CREATE CARD WITH FLIP + SLIDE */
+/* 🃏 CREATE CARD WITH ANIMATION */
 function createCardElement(card, hidden = false) {
   const container = document.createElement("div");
   container.classList.add("card-container", "slide-in");
@@ -38,7 +69,7 @@ function createCardElement(card, hidden = false) {
   cardDiv.classList.add("card");
 
   const front = document.createElement("img");
-  front.src = `assets/cards/${card}.png`;
+  front.src = `assets/cards/${getCardFileName(card)}`;
   front.classList.add("card-face", "card-front");
 
   const back = document.createElement("div");
@@ -57,7 +88,7 @@ function createCardElement(card, hidden = false) {
   return container;
 }
 
-/* RENDER */
+/* 🎮 RENDER */
 function renderCards(revealDealer = false) {
   const playerDiv = document.getElementById("player-cards");
   const dealerDiv = document.getElementById("dealer-cards");
