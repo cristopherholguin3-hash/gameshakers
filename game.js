@@ -1,20 +1,25 @@
-const cards = {
-  "2": 2, "3": 3, "4": 4, "5": 5, "6": 6,
-  "7": 7, "8": 8, "9": 9, "10": 10,
-  "J": 10, "Q": 10, "K": 10, "A": 11
-};
+const suits = ["H", "S", "D", "C"];
+const values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
 
 let playerHand = [];
 let dealerHand = [];
 
-function dealCard() {
-  const keys = Object.keys(cards);
-  return keys[Math.floor(Math.random() * keys.length)];
+function getRandomCard() {
+  const value = values[Math.floor(Math.random() * values.length)];
+  const suit = suits[Math.floor(Math.random() * suits.length)];
+  return value + suit;
+}
+
+function getCardValue(card) {
+  let val = card.slice(0, -1);
+  if (["J","Q","K"].includes(val)) return 10;
+  if (val === "A") return 11;
+  return parseInt(val);
 }
 
 function calculateHand(hand) {
-  let total = hand.reduce((sum, card) => sum + cards[card], 0);
-  let aces = hand.filter(card => card === "A").length;
+  let total = hand.reduce((sum, c) => sum + getCardValue(c), 0);
+  let aces = hand.filter(c => c.startsWith("A")).length;
 
   while (total > 21 && aces > 0) {
     total -= 10;
@@ -24,50 +29,83 @@ function calculateHand(hand) {
   return total;
 }
 
-function updateUI() {
-  document.getElementById("player").innerText =
-    `Player: ${playerHand.join(", ")} (Total: ${calculateHand(playerHand)})`;
+/* CREATE CARD WITH FLIP + SLIDE */
+function createCardElement(card, hidden = false) {
+  const container = document.createElement("div");
+  container.classList.add("card-container", "slide-in");
 
-  document.getElementById("dealer").innerText =
-    `Dealer: ${dealerHand[0]}, ?`;
+  const cardDiv = document.createElement("div");
+  cardDiv.classList.add("card");
 
-  if (calculateHand(playerHand) > 21) {
-    document.getElementById("result").innerText = "💥 You busted!";
+  const front = document.createElement("img");
+  front.src = `assets/cards/${card}.png`;
+  front.classList.add("card-face", "card-front");
+
+  const back = document.createElement("div");
+  back.classList.add("card-face", "card-back");
+
+  cardDiv.appendChild(front);
+  cardDiv.appendChild(back);
+
+  if (!hidden) {
+    setTimeout(() => {
+      cardDiv.classList.add("flip");
+    }, 100);
   }
+
+  container.appendChild(cardDiv);
+  return container;
 }
 
+/* RENDER */
+function renderCards(revealDealer = false) {
+  const playerDiv = document.getElementById("player-cards");
+  const dealerDiv = document.getElementById("dealer-cards");
+
+  playerDiv.innerHTML = "";
+  dealerDiv.innerHTML = "";
+
+  playerHand.forEach(card => {
+    playerDiv.appendChild(createCardElement(card));
+  });
+
+  dealerHand.forEach((card, i) => {
+    const hidden = (i === 1 && !revealDealer);
+    dealerDiv.appendChild(createCardElement(card, hidden));
+  });
+}
+
+/* GAME FLOW */
 function startGame() {
-  playerHand = [dealCard(), dealCard()];
-  dealerHand = [dealCard(), dealCard()];
+  playerHand = [getRandomCard(), getRandomCard()];
+  dealerHand = [getRandomCard(), getRandomCard()];
   document.getElementById("result").innerText = "";
-  updateUI();
+  renderCards();
 }
 
 function hit() {
-  playerHand.push(dealCard());
-  updateUI();
+  playerHand.push(getRandomCard());
+  renderCards();
+
+  if (calculateHand(playerHand) > 21) {
+    document.getElementById("result").innerText = "💥 Bust!";
+  }
 }
 
 function stand() {
   while (calculateHand(dealerHand) < 17) {
-    dealerHand.push(dealCard());
+    dealerHand.push(getRandomCard());
   }
 
-  const playerTotal = calculateHand(playerHand);
-  const dealerTotal = calculateHand(dealerHand);
+  renderCards(true);
 
-  document.getElementById("dealer").innerText =
-    `Dealer: ${dealerHand.join(", ")} (Total: ${dealerTotal})`;
+  let p = calculateHand(playerHand);
+  let d = calculateHand(dealerHand);
 
-  if (dealerTotal > 21) {
-    result = "🎉 Dealer busted! You win!";
-  } else if (dealerTotal > playerTotal) {
-    result = "😞 Dealer wins.";
-  } else if (dealerTotal < playerTotal) {
-    result = "🎉 You win!";
-  } else {
-    result = "🤝 It's a tie!";
-  }
+  let result;
+  if (d > 21 || p > d) result = "🎉 You Win!";
+  else if (d > p) result = "😞 Dealer Wins";
+  else result = "🤝 Tie";
 
   document.getElementById("result").innerText = result;
 }
