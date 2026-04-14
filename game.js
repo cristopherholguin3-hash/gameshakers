@@ -42,11 +42,9 @@ function getCardValue(card) {
 
 /* 🔥 CONVERT TO SVG FILE NAME */
 function getCardFileName(card) {
-  let val = card.slice(0, -1);
-  let suit = card.slice(-1);
-
-  return `${valuesMap[val]}_of_${suitsMap[suit]}.svg`;
+  return `${card}.svg`;
 }
+
 
 function calculateHand(hand) {
   let total = hand.reduce((sum, c) => sum + getCardValue(c), 0);
