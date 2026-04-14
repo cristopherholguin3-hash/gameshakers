@@ -4,11 +4,13 @@ body {
   color: white;
   text-align: center;
 
-  background: 
-    radial-gradient(circle at center, rgba(0,0,0,0.6), rgba(0,0,0,0.9)),
-    url("assets/table.jpg") no-repeat center center/cover;
+  /* Casino table background image + dark overlay for readability */
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)),
+    url("assets/casino-table.jpg") no-repeat center center/cover;
 }
 
+/* NAV */
 nav {
   background: #111;
   padding: 10px;
@@ -20,15 +22,17 @@ nav a {
   text-decoration: none;
 }
 
+/* TABLE AREA */
 .table {
   margin-top: 30px;
 }
 
+/* CARD ROWS */
 .cards {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin: 20px;
+  gap: 20px;
+  margin: 25px 0;
 }
 
 /* CARD CONTAINER */
@@ -36,6 +40,7 @@ nav a {
   width: 80px;
   height: 120px;
   perspective: 1000px;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
 }
 
 /* CARD */
@@ -44,16 +49,16 @@ nav a {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transform: rotateY(180deg);
+  transform: rotateY(180deg); /* start face-down */
   transition: transform 0.8s;
 }
 
 /* FLIP */
 .card.flip {
-  transform: rotateY(0deg);
+  transform: rotateY(0deg); /* reveal front */
 }
 
-/* FRONT/BACK */
+/* FRONT/BACK SHARED */
 .card-face {
   position: absolute;
   width: 100%;
@@ -61,22 +66,26 @@ nav a {
   backface-visibility: hidden;
 }
 
+/* FRONT */
 .card-front {
   transform: rotateY(0deg);
+  backface-visibility: hidden;
 }
 
+/* BACK */
 .card-back {
-  background: url("assets/cards/back.png") no-repeat center/cover;
+  background: url("assets/cards/back.svg") no-repeat center/cover;
+  backface-visibility: hidden;
 }
 
-/* SLIDE IN */
+/* DEAL ANIMATION */
 .slide-in {
-  animation: slide 0.5s ease forwards;
+  animation: deal 0.4s ease-out forwards;
 }
 
-@keyframes slide {
+@keyframes deal {
   from {
-    transform: translateY(-100px) scale(0.8);
+    transform: translateY(-40px) scale(0.9);
     opacity: 0;
   }
   to {
@@ -85,6 +94,7 @@ nav a {
   }
 }
 
+/* BUTTONS */
 button {
   padding: 10px 20px;
   margin: 10px;
@@ -92,9 +102,58 @@ button {
   border: none;
   color: white;
   cursor: pointer;
+  font-size: 16px;
+  border-radius: 6px;
 }
 
+/* SCORE DISPLAY */
+.score {
+  font-size: 20px;
+  margin-top: 5px;
+  opacity: 0.85;
+}
+
+/* WIN/LOSE ANIMATIONS */
+.win {
+  animation: glow 1s ease-out forwards;
+}
+
+.lose {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 0px gold; }
+  to { box-shadow: 0 0 20px gold; }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* DEALER LABEL */
 .dealer {
   width: 120px;
   margin-bottom: 10px;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 600px) {
+  .card-container {
+    width: 60px;
+    height: 90px;
+  }
+
+  button {
+    width: 90%;
+    margin: 5px auto;
+  }
+
+  .cards {
+    gap: 10px;
+  }
 }
