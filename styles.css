@@ -62,7 +62,7 @@ nav a {
 }
 
 .card-front {
-  transform: rotateY(180deg);
+  transform: rotateY(0deg);
 }
 
 .card-back {
