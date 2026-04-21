@@ -42,11 +42,9 @@ function getCardValue(card) {
   return parseInt(val);
 }
 
-// Convert to correct SVG filename
+// Convert to correct SVG filename (matches AC.svg, 10D.svg, QS.svg, etc.)
 function getCardFileName(card) {
-  let val = card.slice(0, -1);
-  let suit = card.slice(-1);
-  return `${valuesMap[val]}_of_${suitsMap[suit]}.svg`;
+  return `${card}.svg`;
 }
 
 // Calculate hand
