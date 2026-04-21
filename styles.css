@@ -6,7 +6,7 @@ body {
 
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)),
-    url("assets/table-bg.png") no-repeat center/cover;
+    url("assets/cards/table-bg.png") no-repeat center center/cover;
 }
 
 /* NAV */
@@ -21,12 +21,12 @@ nav a {
   text-decoration: none;
 }
 
-/* TABLE */
+/* TABLE AREA */
 .table {
   margin-top: 30px;
 }
 
-/* CARDS */
+/* CARD ROWS */
 .cards {
   display: flex;
   justify-content: center;
@@ -34,13 +34,15 @@ nav a {
   margin: 25px 0;
 }
 
-/* CARD */
+/* CARD CONTAINER */
 .card-container {
   width: 80px;
   height: 120px;
   perspective: 1000px;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
 }
 
+/* CARD */
 .card {
   width: 100%;
   height: 100%;
@@ -50,10 +52,12 @@ nav a {
   transition: transform 0.8s;
 }
 
+/* FLIP */
 .card.flip {
   transform: rotateY(0deg);
 }
 
+/* FRONT/BACK SHARED */
 .card-face {
   position: absolute;
   width: 100%;
@@ -61,26 +65,28 @@ nav a {
   backface-visibility: hidden;
 }
 
+/* FRONT */
 .card-front {
   transform: rotateY(0deg);
 }
 
+/* BACK */
 .card-back {
   background: url("assets/cards/back.svg") no-repeat center/cover;
 }
 
-/* ANIMATION */
+/* DEAL ANIMATION */
 .slide-in {
   animation: deal 0.4s ease-out forwards;
 }
 
 @keyframes deal {
   from {
-    transform: translateY(-40px);
+    transform: translateY(-40px) scale(0.9);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
 }
@@ -93,6 +99,7 @@ button {
   border: none;
   color: white;
   cursor: pointer;
+  font-size: 16px;
   border-radius: 6px;
 }
 
@@ -137,3 +144,21 @@ button {
   background: #22c55e;
   border: none;
 }
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .card-container {
+    width: 60px;
+    height: 90px;
+  }
+
+  button {
+    width: 90%;
+    margin: 5px auto;
+  }
+
+  .cards {
+    gap: 10px;
+  }
+}
+
