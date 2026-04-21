@@ -9,6 +9,17 @@ body {
   url("assets/cards/table-bg.png") no-repeat center center/cover;
 }
 
+/* FIX: Make cards appear above background */
+.card-container,
+.card,
+.card-face,
+.card-front,
+.card-back,
+.card img {
+  position: relative;
+  z-index: 999;
+}
+
 /* NAV */
 nav {
   background: #111;
