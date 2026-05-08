@@ -27,14 +27,36 @@ const values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
 let playerHand = [];
 let dealerHand = [];
 
-// Random card
+// =========================
+// GAME SETTINGS (for chatbox /set commands)
+// =========================
+let gameSettings = {
+  dealerHitsSoft17: false,
+  decks: 1,
+  animations: true,
+  difficulty: "normal"
+};
+
+// =========================
+// MULTIPLAYER STATE
+// =========================
+let isMultiplayer = false;
+let players = [];
+let currentPlayerIndex = 0;
+let dealerObj = { name: "Dealer", hand: [] };
+
+// =========================
+// RANDOM CARD
+// =========================
 function getRandomCard() {
   const value = values[Math.floor(Math.random() * values.length)];
   const suit = suits[Math.floor(Math.random() * suits.length)];
   return value + suit;
 }
 
-// Card value
+// =========================
+ // CARD VALUE
+// =========================
 function getCardValue(card) {
   let val = card.slice(0, -1);
   if (["J","Q","K"].includes(val)) return 10;
@@ -47,7 +69,9 @@ function getCardFileName(card) {
   return `${card}.svg`;
 }
 
-// Calculate hand
+// =========================
+// CALCULATE HAND
+// =========================
 function calculateHand(hand) {
   let total = hand.reduce((sum, c) => sum + getCardValue(c), 0);
   let aces = hand.filter(c => c.startsWith("A")).length;
@@ -60,7 +84,9 @@ function calculateHand(hand) {
   return total;
 }
 
-// Create card element
+// =========================
+// CREATE CARD ELEMENT
+// =========================
 function createCardElement(card, hidden = false) {
   const container = document.createElement("div");
   container.classList.add("card-container", "slide-in");
@@ -88,7 +114,9 @@ function createCardElement(card, hidden = false) {
   return container;
 }
 
-// Render cards
+// =========================
+// RENDER CARDS
+// =========================
 function renderCards(revealDealer = false) {
   const playerDiv = document.getElementById("player-cards");
   const dealerDiv = document.getElementById("dealer-cards");
@@ -101,20 +129,49 @@ function renderCards(revealDealer = false) {
   });
 
   dealerHand.forEach((card, i) => {
-    const hidden = (i === 1 && !revealDealer);
+    const hidden = (i === 1 && !revealDealer && !isMultiplayer);
     dealerDiv.appendChild(createCardElement(card, hidden));
   });
 }
 
-// Game flow
+// =========================
+// CAMERA DIVE + MUSIC
+// =========================
+function startGameAnimationAndMusic() {
+  document.body.classList.add("start-animation");
+
+  const music = document.getElementById("bg-music");
+  if (music && music.paused) {
+    music.volume = 0;
+    music.play().catch(() => {});
+    const fade = setInterval(() => {
+      if (music.volume < 1) {
+        music.volume = Math.min(1, music.volume + 0.02);
+      } else {
+        clearInterval(fade);
+      }
+    }, 120);
+  }
+}
+
+// =========================
+// SINGLE-PLAYER GAME FLOW
+// =========================
 function startGame() {
+  isMultiplayer = false;
   playerHand = [getRandomCard(), getRandomCard()];
   dealerHand = [getRandomCard(), getRandomCard()];
   document.getElementById("result").innerText = "";
   renderCards();
+  startGameAnimationAndMusic();
 }
 
 function hit() {
+  if (isMultiplayer) {
+    multiplayerHit();
+    return;
+  }
+
   playerHand.push(getRandomCard());
   renderCards();
 
@@ -124,6 +181,11 @@ function hit() {
 }
 
 function stand() {
+  if (isMultiplayer) {
+    multiplayerStand();
+    return;
+  }
+
   while (calculateHand(dealerHand) < 17) {
     dealerHand.push(getRandomCard());
   }
@@ -141,5 +203,170 @@ function stand() {
   document.getElementById("result").innerText = result;
 }
 
+// =========================
+// MULTIPLAYER LOGIC (Option A)
+// =========================
+function startMultiplayer() {
+  const numStr = prompt("Enter number of players (2–6):");
+  const num = parseInt(numStr);
+  if (isNaN(num) || num < 2 || num > 6) {
+    alert("Invalid number of players.");
+    return;
+  }
+
+  players = [];
+  for (let i = 0; i < num; i++) {
+    let name = prompt(`Enter name for Player ${i + 1}:`);
+    if (!name) name = `Player ${i + 1}`;
+    players.push({ name, hand: [], busted: false });
+  }
+
+  dealerObj = { name: "Dealer", hand: [] };
+
+  players.forEach(p => {
+    p.hand = [getRandomCard(), getRandomCard()];
+  });
+  dealerObj.hand = [getRandomCard(), getRandomCard()];
+
+  isMultiplayer = true;
+  currentPlayerIndex = 0;
+
+  startPlayerTurn(players[0]);
+  startGameAnimationAndMusic();
+}
+
+function startPlayerTurn(player) {
+  document.getElementById("result").innerText = `${player.name}'s turn`;
+  playerHand = player.hand;
+  dealerHand = dealerObj.hand;
+  renderCards();
+}
+
+function multiplayerHit() {
+  const player = players[currentPlayerIndex];
+  player.hand.push(getRandomCard());
+  playerHand = player.hand;
+  renderCards();
+
+  if (calculateHand(player.hand) > 21) {
+    player.busted = true;
+    alert(`${player.name} busted!`);
+    nextPlayer();
+  }
+}
+
+function multiplayerStand() {
+  nextPlayer();
+}
+
+function nextPlayer() {
+  currentPlayerIndex++;
+  if (currentPlayerIndex >= players.length) {
+    dealerTurnMulti();
+  } else {
+    startPlayerTurn(players[currentPlayerIndex]);
+  }
+}
+
+function dealerTurnMulti() {
+  dealerHand = dealerObj.hand;
+  while (calculateHand(dealerHand) < 17) {
+    dealerHand.push(getRandomCard());
+  }
+  dealerObj.hand = dealerHand;
+  renderCards(true);
+  showResultsMulti();
+}
+
+function showResultsMulti() {
+  const dealerTotal = calculateHand(dealerObj.hand);
+  let resultText = `Dealer: ${dealerTotal}\n\n`;
+
+  players.forEach(p => {
+    const total = calculateHand(p.hand);
+    resultText += `${p.name} (${total}) → `;
+
+    if (p.busted) resultText += "Busted\n";
+    else if (dealerTotal > 21) resultText += "Win (Dealer bust)\n";
+    else if (total > dealerTotal) resultText += "Win\n";
+    else if (total < dealerTotal) resultText += "Lose\n";
+    else resultText += "Tie\n";
+  });
+
+  alert(resultText);
+  document.getElementById("result").innerText = "Multiplayer round finished.";
+}
+
+// =========================
+// CHATBOT SYSTEM
+// =========================
+const helpTopics = {
+  "hit": "Hit means you take another card.",
+  "stand": "Stand means you stop taking cards.",
+  "bust": "Bust means your total is over 21 and you lose.",
+  "ace": "An Ace counts as 11 unless that would bust you, then it counts as 1.",
+  "dealer": "The dealer must hit until they reach 17 in this version."
+};
+
+function getSuggestion(player, dealer) {
+  if (player <= 11) return "You should hit.";
+  if (player >= 17) return "You should stand.";
+  if (player === 16 && dealer >= 7) return "You should hit.";
+  if (player === 12 && dealer >= 4 && dealer <= 6) return "You should stand.";
+  return "This is close — hit if you feel risky, stand if you want to play safe.";
+}
+
+function handleChatMessage(msg) {
+  msg = msg.toLowerCase();
+
+  for (let key in helpTopics) {
+    if (msg.includes(key)) {
+      return helpTopics[key];
+    }
+  }
+
+  if (msg.includes("suggest") || msg.includes("help me decide") || msg.includes("what should i do")) {
+    let p = calculateHand(playerHand);
+    let d = calculateHand(dealerHand);
+    return `Your total is ${p}, dealer shows ${d}. ${getSuggestion(p, d)}`;
+  }
+
+  if (msg.startsWith("/set")) {
+    let parts = msg.split(" ");
+    let setting = parts[1];
+    let value = parts[2];
+
+    if (gameSettings.hasOwnProperty(setting)) {
+      if (value === "true") value = true;
+      if (value === "false") value = false;
+      gameSettings[setting] = value;
+      return `Setting '${setting}' updated to ${value}.`;
+    }
+
+    return "Unknown setting. Try: dealerHitsSoft17, decks, animations, difficulty.";
+  }
+
+  return "Ask me about rules (hit, stand, bust, ace, dealer) or type 'suggest' for a move. Use /set to change settings.";
+}
+
+function sendChat() {
+  const input = document.getElementById("chat-input");
+  const body = document.getElementById("chat-body");
+  if (!input || !body) return;
+
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  body.innerHTML += `<div><b>You:</b> ${msg}</div>`;
+  const reply = handleChatMessage(msg);
+  body.innerHTML += `<div><b>Bot:</b> ${reply}</div>`;
+
+  input.value = "";
+  body.scrollTop = body.scrollHeight;
+}
+
+// =========================
+// INITIAL START
+// =========================
 startGame();
 
