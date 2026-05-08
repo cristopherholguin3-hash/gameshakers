@@ -4,9 +4,35 @@ body {
   color: white;
   text-align: center;
 
+  /* New aerial-style dealer/table background */
   background:
   linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)),
-  url("assets/cards/table-bg.png") no-repeat center center/cover;
+  url("assets/bg/dealer-topdown.jpg") no-repeat center center/cover;
+
+  transform-origin: center center;
+}
+
+/* Camera dive animation */
+body.start-animation {
+  animation: dive 1.8s ease-out forwards;
+}
+
+@keyframes dive {
+  0% {
+    transform: scale(1.8);
+    filter: blur(8px);
+    opacity: 0.3;
+  }
+  60% {
+    transform: scale(1.1);
+    filter: blur(2px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    filter: blur(0);
+    opacity: 1;
+  }
 }
 
 /* FIX: Make cards appear above background */
@@ -172,4 +198,3 @@ button {
     gap: 10px;
   }
 }
-
