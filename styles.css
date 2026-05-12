@@ -109,7 +109,7 @@ nav a {
 
 /* BACK */
 .card-back {
-  background: url("assets/cards/back.svg") no-repeat center/cover;
+  background: url("assets/cards/base_card.png") no-repeat center/cover;
 }
 
 /* DEAL ANIMATION */
