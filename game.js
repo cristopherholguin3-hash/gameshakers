@@ -125,8 +125,8 @@ function createCardElement(card, hidden = false) {
 
   // IMPORTANT:
   // BACK FIRST, FRONT SECOND
-  cardDiv.appendChild(front);
   cardDiv.appendChild(back);
+  cardDiv.appendChild(front);
 
   // =====================
   // FLIP LOGIC
