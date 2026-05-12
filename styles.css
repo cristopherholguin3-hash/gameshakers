@@ -5,24 +5,33 @@ html, body {
   padding: 0;
 }
 
-/* HOME SCREEN BACKGROUND (before clicking Play) */
+/* MAIN BODY */
 body {
   font-family: Arial;
   color: white;
   text-align: center;
 
-  background:
+  /* FIRST IMAGE */
+  background-image:
     linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
-    url("assets/bg/img_4946.png") center center / cover no-repeat fixed;
+    url("./assets/bg/img_4946.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  transition: background-image 1s ease;
 
   transform-origin: center center;
 }
 
-/* GAME SCREEN BACKGROUND (after clicking Play) */
+/* SECOND IMAGE AFTER START */
 body.start-animation {
-  background:
+
+  background-image:
     linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
-    url("assets/bg/img_4945.png") center center / cover no-repeat fixed;
+    url("./assets/bg/img_4945.png");
 
   animation: dive 1.8s ease-out forwards;
 }
