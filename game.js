@@ -379,6 +379,12 @@ function sendChat() {
 // INITIAL START
 // =========================
 window.onload = () => {
-  // Home screen only
+
+  // Show home background first
+
+  setTimeout(() => {
+    startGame();
+  }, 2500);
+
 };
 
