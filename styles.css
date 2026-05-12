@@ -10,8 +10,8 @@ body {
   text-align: center;
 
   background:
-    linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)),
-    url("assets/bg/img_4945.png") no-repeat center center fixed;
+  linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
+  url("/assets/bg/img_4945.png") center center / cover no-repeat fixed;
 
   background-size: cover;
 
