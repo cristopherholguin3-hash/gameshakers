@@ -6,8 +6,8 @@ body {
 
   /* New aerial-style dealer/table background */
   background:
-  linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)),
-  url("assets/bg/dealer-topdown.jpg") no-repeat center center/cover;
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)),
+    url("assets/bg/dealer-topdown.jpg") no-repeat center center/cover;
 
   transform-origin: center center;
 }
@@ -23,11 +23,13 @@ body.start-animation {
     filter: blur(8px);
     opacity: 0.3;
   }
+
   60% {
     transform: scale(1.1);
     filter: blur(2px);
     opacity: 0.9;
   }
+
   100% {
     transform: scale(1);
     filter: blur(0);
@@ -85,13 +87,14 @@ nav a {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transform: rotateY(180deg);
   transition: transform 0.8s;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
-/* FLIP */
+/* FLIP CARD TO SHOW FRONT */
 .card.flip {
-  transform: rotateY(0deg);
+  transform: rotateY(180deg);
 }
 
 /* FRONT/BACK SHARED */
@@ -100,24 +103,30 @@ nav a {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-}
-
-/* FRONT */
-.card-front {
-  transform: rotateY(0deg);
-}
-
-/* BACK */
-.card-back {
-  background: url("assets/cards/Copilot_20260511_222450.png") no-repeat center;
-  background-size: cover; /* <-- FIXED */
-  background-position: center;
-  background-color: black;
-  transform: rotateY(180deg);
-  backface-visibility: hidden;
   border-radius: 10px;
 }
 
+/* FRONT CARD */
+.card-front {
+  transform: rotateY(180deg);
+}
+
+.card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* BACK CARD */
+.card-back {
+  background: url("assets/cards/Copilot_20260511_222450.png") no-repeat center;
+  background-size: cover;
+  background-position: center;
+  background-color: black;
+  transform: rotateY(0deg);
+  border-radius: 10px;
+}
 
 /* DEAL ANIMATION */
 .slide-in {
@@ -129,6 +138,7 @@ nav a {
     transform: translateY(-40px) scale(0.9);
     opacity: 0;
   }
+
   to {
     transform: translateY(0) scale(1);
     opacity: 1;
@@ -145,6 +155,12 @@ button {
   cursor: pointer;
   font-size: 16px;
   border-radius: 6px;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: #16a34a;
 }
 
 /* CHATBOT */
@@ -191,6 +207,7 @@ button {
 
 /* MOBILE */
 @media (max-width: 600px) {
+
   .card-container {
     width: 60px;
     height: 90px;
