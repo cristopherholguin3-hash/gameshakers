@@ -4,7 +4,6 @@ body {
   color: white;
   text-align: center;
 
-  /* New aerial-style dealer/table background */
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)),
     url("assets/bg/dealer-topdown.jpg") no-repeat center center/cover;
@@ -23,13 +22,11 @@ body.start-animation {
     filter: blur(8px);
     opacity: 0.3;
   }
-
   60% {
     transform: scale(1.1);
     filter: blur(2px);
     opacity: 0.9;
   }
-
   100% {
     transform: scale(1);
     filter: blur(0);
@@ -37,7 +34,7 @@ body.start-animation {
   }
 }
 
-/* FIX: Make cards appear above background */
+/* Make cards appear above background */
 .card-container,
 .card,
 .card-face,
@@ -90,9 +87,12 @@ nav a {
   transition: transform 0.8s;
   overflow: hidden;
   border-radius: 10px;
+
+  /* FIXED — card starts facing the player */
+  transform: rotateY(0deg);
 }
 
-/* FLIP CARD TO SHOW FRONT */
+/* FLIP — show the front */
 .card.flip {
   transform: rotateY(180deg);
 }
@@ -108,7 +108,7 @@ nav a {
 
 /* FRONT CARD */
 .card-front {
-  transform: rotateY(180deg);
+  transform: rotateY(0deg); /* FIXED */
 }
 
 .card-front img {
@@ -124,7 +124,8 @@ nav a {
   background-size: cover;
   background-position: center;
   background-color: black;
-  transform: rotateY(0deg);
+
+  transform: rotateY(180deg); /* FIXED */
   border-radius: 10px;
 }
 
@@ -138,7 +139,6 @@ nav a {
     transform: translateY(-40px) scale(0.9);
     opacity: 0;
   }
-
   to {
     transform: translateY(0) scale(1);
     opacity: 1;
@@ -207,7 +207,6 @@ button:hover {
 
 /* MOBILE */
 @media (max-width: 600px) {
-
   .card-container {
     width: 60px;
     height: 90px;
