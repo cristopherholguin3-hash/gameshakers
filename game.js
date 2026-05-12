@@ -378,5 +378,7 @@ function sendChat() {
 // =========================
 // INITIAL START
 // =========================
-startGame();
+window.onload = () => {
+  // Home screen only
+};
 
