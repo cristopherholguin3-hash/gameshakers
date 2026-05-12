@@ -89,55 +89,36 @@ function calculateHand(hand) {
 // =========================
 function createCardElement(card, hidden = false) {
 
-  // OUTER CONTAINER
   const container = document.createElement("div");
   container.classList.add("card-container", "slide-in");
 
-  // MAIN CARD
   const cardDiv = document.createElement("div");
   cardDiv.classList.add("card");
 
-  // =====================
-  // CARD BACK
-  // =====================
+  // ONLY flip if NOT hidden
+  if (!hidden) {
+    cardDiv.classList.add("flip");
+  }
+
+  // BACK
   const back = document.createElement("div");
   back.classList.add("card-face", "card-back");
 
-  // =====================
-  // CARD FRONT
-  // =====================
+  // FRONT
   const front = document.createElement("div");
   front.classList.add("card-face", "card-front");
 
-  // CARD IMAGE
+  // IMAGE
   const img = document.createElement("img");
   img.src = `assets/cards/${getCardFileName(card)}`;
   img.alt = card;
 
-  // IMAGE STYLING
-  img.style.width = "100%";
-  img.style.height = "100%";
-  img.style.objectFit = "cover";
-  img.style.borderRadius = "10px";
-
-  // PUT IMAGE INSIDE FRONT
   front.appendChild(img);
 
-  // IMPORTANT:
-  // BACK FIRST, FRONT SECOND
+  // ORDER MATTERS
   cardDiv.appendChild(back);
   cardDiv.appendChild(front);
 
-  // =====================
-  // FLIP LOGIC
-  // =====================
-  if (!hidden) {
-    setTimeout(() => {
-      cardDiv.classList.add("flip");
-    }, 100);
-  }
-
-  // ADD CARD TO CONTAINER
   container.appendChild(cardDiv);
 
   return container;
