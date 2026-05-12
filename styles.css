@@ -89,12 +89,12 @@ nav a {
   border-radius: 10px;
 
   /* DEFAULT: show BACK (dealer hidden card) */
-  transform: rotateY(180deg);
+  transform: rotateY(180deg)
 }
 
 /* FLIP: show FRONT */
 .card.flip {
-  transform: rotateY(0deg);
+  transform: rotateY(180deg);
 }
 
 /* FRONT/BACK SHARED */
@@ -108,7 +108,7 @@ nav a {
 
 /* FRONT CARD */
 .card-front {
-  transform: rotateY(0deg);
+  transform: rotateY(180deg);
 }
 
 .card-front img {
@@ -126,7 +126,7 @@ nav a {
   background-color: black;
 
   /* BACK faces away */
-  transform: rotateY(180deg);
+  transform: rotateY(0deg);
 }
 
 /* DEAL ANIMATION */
