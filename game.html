@@ -49,6 +49,19 @@
   </div>
 </div>
 
+<!-- Your game logic -->
 <script src="game.js"></script>
+
+<!-- ⭐ REQUIRED FIX: Allow audio after first user click -->
+<script>
+document.addEventListener("click", () => {
+  const m = document.getElementById("bg-music");
+  if (m && m.paused) {
+    m.volume = 0.4;
+    m.play().catch(()=>{});
+  }
+}, { once: true });
+</script>
+
 </body>
 </html>
