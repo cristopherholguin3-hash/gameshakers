@@ -109,7 +109,7 @@ nav a {
 
 /* BACK */
 .card-back {
-  background: url("assets/cards/base_card.png") no-repeat center;
+  background: url("assets/cards/Copilot_20260511_222450.png") no-repeat center;
   background-size: contain; /* <-- THIS IS THE FIX */
   background-position: center;
   background-color: black; /* or any color you want behind it */
