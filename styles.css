@@ -6,7 +6,9 @@ body {
 
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)),
-    url("assets/bg/dealer-topdown.jpg") no-repeat center center/cover;
+    url("assets/bg/img_4945.png") no-repeat center center fixed;
+
+  background-size: cover;
 
   transform-origin: center center;
 }
