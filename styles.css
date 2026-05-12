@@ -14,7 +14,7 @@ body {
   /* FIRST IMAGE */
   background-image:
     linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
-    url("./assets/bg/img_4946.png");
+    url("assets/bg/IMG_4946.png");
 
   background-size: cover;
   background-position: center;
@@ -31,7 +31,7 @@ body.start-animation {
 
   background-image:
     linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
-    url("./assets/bg/img_4945.png");
+    url("assets/bg/IMG_4945.png");
 
   animation: dive 1.8s ease-out forwards;
 }
