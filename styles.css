@@ -87,9 +87,6 @@ nav a {
   transition: transform 0.8s;
   overflow: hidden;
   border-radius: 10px;
-
-  /* DEFAULT: show BACK (dealer hidden card) */
-  transform: rotateY(180deg)
 }
 
 /* FLIP: show FRONT */
