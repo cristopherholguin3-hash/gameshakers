@@ -1,28 +1,33 @@
 html, body {
   height: 100%;
   width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
+/* HOME SCREEN BACKGROUND (before clicking Play) */
 body {
-  margin: 0;
   font-family: Arial;
   color: white;
   text-align: center;
 
   background:
-  linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
-  url("assets/bg/img_4945.png") center center / cover no-repeat fixed;
-
-  background-size: cover;
+    linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
+    url("assets/bg/img_4946.png") center center / cover no-repeat fixed;
 
   transform-origin: center center;
 }
 
-/* Camera dive animation */
+/* GAME SCREEN BACKGROUND (after clicking Play) */
 body.start-animation {
+  background:
+    linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
+    url("assets/bg/img_4945.png") center center / cover no-repeat fixed;
+
   animation: dive 1.8s ease-out forwards;
 }
 
+/* CAMERA DIVE ANIMATION */
 @keyframes dive {
   0% {
     transform: scale(1.8);
