@@ -111,6 +111,9 @@ nav a {
 .card-back {
   background: url("assets/cards/base_card.png") no-repeat center/cover;
   transform: rotateY(180deg);
+  background-size: cover;
+  background-position: center;
+  backface-visibility: hidden;
 }
 
 /* DEAL ANIMATION */
